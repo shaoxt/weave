@@ -7,7 +7,7 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.resources.ManagedResources;
+import io.aftersound.weave.resources.ManagedResources;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

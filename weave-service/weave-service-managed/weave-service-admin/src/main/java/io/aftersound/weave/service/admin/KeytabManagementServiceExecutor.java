@@ -1,6 +1,5 @@
 package io.aftersound.weave.service.admin;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.service.ServiceContext;
@@ -8,7 +7,7 @@ import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.resources.ManagedResources;
+import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.utils.Base64;
 
 import java.nio.file.DirectoryStream;

@@ -1,9 +1,9 @@
 package io.aftersound.weave.service.couchbase;
 
 import io.aftersound.weave.config.Config;
-import io.aftersound.weave.service.resources.ManagedResources;
-import io.aftersound.weave.service.resources.ResourceInitializer;
-import io.aftersound.weave.service.resources.ResourceType;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resources.ResourceInitializer;
+import io.aftersound.weave.resources.ResourceType;
 
 public class ResourceInitializerImpl implements ResourceInitializer {
 

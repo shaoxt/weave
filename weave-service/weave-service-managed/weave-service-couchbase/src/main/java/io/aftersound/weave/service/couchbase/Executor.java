@@ -1,10 +1,9 @@
 package io.aftersound.weave.service.couchbase;
 
 import io.aftersound.weave.service.ServiceContext;
-import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.resources.ManagedResources;
+import io.aftersound.weave.resources.ManagedResources;
 import org.mvel2.templates.CompiledTemplate;
 import org.mvel2.templates.TemplateRuntime;
 

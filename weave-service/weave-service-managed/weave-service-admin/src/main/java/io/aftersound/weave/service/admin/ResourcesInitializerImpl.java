@@ -8,9 +8,9 @@ import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
-import io.aftersound.weave.service.resources.ManagedResources;
-import io.aftersound.weave.service.resources.ResourceInitializer;
-import io.aftersound.weave.service.resources.ResourceType;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resources.ResourceInitializer;
+import io.aftersound.weave.resources.ResourceType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

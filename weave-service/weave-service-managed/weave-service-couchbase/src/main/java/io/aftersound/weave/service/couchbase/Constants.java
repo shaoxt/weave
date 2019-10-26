@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.couchbase;
 
 import io.aftersound.weave.dataclient.DataClientRegistry;
-import io.aftersound.weave.service.resources.ResourceType;
+import io.aftersound.weave.resources.ResourceType;
 
 class Constants {
 
