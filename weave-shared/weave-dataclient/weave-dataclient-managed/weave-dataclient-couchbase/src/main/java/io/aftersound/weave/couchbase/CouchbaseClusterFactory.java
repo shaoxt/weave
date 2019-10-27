@@ -9,6 +9,9 @@ import io.aftersound.weave.dataclient.Endpoint;
 
 import java.util.Map;
 
+/**
+ * A {@link DataClientFactory} that creates/destroys Couchbase {@link Cluster} on instruction.
+ */
 public class CouchbaseClusterFactory extends DataClientFactory<Cluster> {
 
     public static final NamedType<Endpoint> COMPANION_CONTROL_TYPE = NamedType.of("CouchbaseCluster", Endpoint.class);
@@ -18,17 +21,28 @@ public class CouchbaseClusterFactory extends DataClientFactory<Cluster> {
         super(dataClientRegistry);
     }
 
+    /**
+     * Create an object of {@link Cluster} as data client
+     * @param options
+     *          - options required to establish connection to targeted Couchbase cluster
+     * @return an object of {@link Cluster} as data client
+     */
     @Override
     protected Cluster createDataClient(Map<String, Object> options) {
         Settings settings = Settings.from(options);
-        Cluster cluster = CouchbaseCluster.create(settings.getNodes());
-        cluster.authenticate(settings.getUsername(), settings.getPassword());
+        Cluster cluster = dataClientRegistry.getClient(CBSignature.of(options));
+        if (cluster == null) {
+            cluster = CouchbaseCluster.create(settings.getNodes());
+            cluster.authenticate(settings.getUsername(), settings.getPassword());
+        }
         return cluster;
     }
 
     @Override
     protected void destroyDataClient(Cluster cluster) {
-        // Note: disconnect Couchbase cluster will close all open buckets
+        // Note:
+        //  disconnect Couchbase cluster will close all open buckets and
+        //  this will make Bucket objects in dataClientRegistry unusable
         if (cluster != null) {
             cluster.disconnect();
         }

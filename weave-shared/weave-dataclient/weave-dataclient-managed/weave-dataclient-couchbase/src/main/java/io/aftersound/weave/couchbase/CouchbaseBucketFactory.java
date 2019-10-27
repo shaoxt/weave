@@ -10,10 +10,11 @@ import io.aftersound.weave.dataclient.Endpoint;
 
 import java.util.Map;
 
-// TODO: how to deal with cluster?
-// when cluster is closed, all open buckets will be closed
-// seems better option is to allow DataClientFactory, hence CouchbaseBucketFactory stateful
-// to keep track of connected clusters and open buckets of each connected cluster
+/**
+ * A {@link DataClientFactory} that creates/destroys Couchbase {@link Bucket} on instruction.
+ * It depends on {@link Cluster} created and registered by {@link CouchbaseClusterFactory} to
+ * create objects of {@link Bucket}.
+ */
 public class CouchbaseBucketFactory extends DataClientFactory<Bucket> {
 
     public static final NamedType<Endpoint> COMPANION_CONTROL_TYPE = NamedType.of("CouchbaseBucket", Endpoint.class);
@@ -23,14 +24,17 @@ public class CouchbaseBucketFactory extends DataClientFactory<Bucket> {
         super(dataClientRegistry);
     }
 
+    /**
+     * Create an object of {@link Bucket} as data client by using {@link Cluster} instance
+     * with specified id.
+     * @param options
+     *          - options required to create {@link Bucket}
+     * @return an instance of {@link Bucket} as data client
+     */
     @Override
     protected Bucket createDataClient(Map<String, Object> options) {
         Settings settings = Settings.from(options);
-        Cluster cluster = dataClientRegistry.getClient(CBSignature.of(options));
-        if (cluster == null) {
-            cluster = CouchbaseCluster.create(settings.getNodes());
-            cluster.authenticate(settings.getUsername(), settings.getPassword());
-        }
+        Cluster cluster = dataClientRegistry.getClient(settings.getClusterId());
         return cluster.openBucket(settings.getBucket());
     }
 

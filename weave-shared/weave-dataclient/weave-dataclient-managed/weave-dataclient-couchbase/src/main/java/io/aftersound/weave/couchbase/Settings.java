@@ -10,6 +10,7 @@ class Settings {
     private static final String USER_NAME = "username";
     private static final String PASSWORD = "password";
     private static final String BUCKET = "bucket";
+    private static final String CLUSTER_ID = "clusterId";
 
     private final Options options;
 
@@ -38,4 +39,9 @@ class Settings {
     String getBucket() {
         return options.get(BUCKET);
     }
+
+    String getClusterId() {
+        return options.get(CLUSTER_ID);
+    }
+
 }
