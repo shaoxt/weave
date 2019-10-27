@@ -75,7 +75,17 @@ public class HDFSFileHandler extends FileHandler<FileSystem, HDFSFileHandlingCon
     }
 
     @Override
+    public Result copyLocalFileTo(String sourceFilePath) {
+        return delegate.copyLocalFileTo(sourceFilePath, control.getDirectory());
+    }
+
+    @Override
     public Result copyLocalFilesTo(List<String> sourceFilePaths, String targetDirectory) {
         return delegate.copyLocalFilesTo(sourceFilePaths, targetDirectory);
+    }
+
+    @Override
+    public Result copyLocalFilesTo(List<String> sourceFilePaths) {
+        return delegate.copyLocalFilesTo(sourceFilePaths, control.getDirectory());
     }
 }

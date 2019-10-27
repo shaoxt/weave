@@ -100,9 +100,19 @@ public class FSFileHandler extends FileHandler<Void, FSFileHandlingControl> {
     }
 
     @Override
+    public Result copyLocalFileTo(String sourceFilePath) {
+        return copyLocalFileTo(sourceFilePath, figureOutTargetFilePath(sourceFilePath, control.getDirectory()));
+    }
+
+    @Override
     public Result copyLocalFilesTo(List<String> sourceFilePaths, String targetDirectory) {
         Result result = copyFiles(sourceFilePaths, targetDirectory);
         return result.set(RETURN_INFOS, result.get(RETURN_INFOS));
+    }
+
+    @Override
+    public Result copyLocalFilesTo(List<String> sourceFilePaths) {
+        return copyLocalFilesTo(sourceFilePaths, control.getDirectory());
     }
 
     private Result copyFile(Path sourcePath, Path targetPath) {

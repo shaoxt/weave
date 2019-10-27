@@ -57,8 +57,21 @@ public class SwiftFileHandler extends FileHandler<Account, SwiftFileHandlingCont
     }
 
     @Override
+    public Result copyLocalFileTo(String sourceFilePath) {
+        // TODO: TTL and overwrite handling
+        String targetFilePath = "TODO";
+        return delegate.copyLocalFileTo(control.getContainerName(), sourceFilePath, targetFilePath, true, null);
+    }
+
+    @Override
     public Result copyLocalFilesTo(List<String> sourceFilePaths, String targetDirectory) {
         // TODO: TTL and overwrite handling
+        return delegate.copyLocalFilesTo(control.getContainerName(), sourceFilePaths.toArray(new String[0]), targetDirectory, true, null);
+    }
+
+    @Override
+    public Result copyLocalFilesTo(List<String> sourceFilePaths) {
+        String targetDirectory = "TODO";
         return delegate.copyLocalFilesTo(control.getContainerName(), sourceFilePaths.toArray(new String[0]), targetDirectory, true, null);
     }
 }

@@ -54,7 +54,19 @@ public class KnoxFileHandler extends FileHandler<KnoxSession, KnoxFileHandlingCo
     }
 
     @Override
+    public Result copyLocalFileTo(String sourceFilePath) {
+        String targetFilePath = "TODO";
+        return delegate.copyLocalFileTo(sourceFilePath, targetFilePath);
+    }
+
+    @Override
     public Result copyLocalFilesTo(List<String> sourceFilePaths, String targetDirectory) {
+        return delegate.copyLocalFilesTo(sourceFilePaths.toArray(new String[0]), targetDirectory);
+    }
+
+    @Override
+    public Result copyLocalFilesTo(List<String> sourceFilePaths) {
+        String targetDirectory = "TODO";
         return delegate.copyLocalFilesTo(sourceFilePaths.toArray(new String[0]), targetDirectory);
     }
 }
