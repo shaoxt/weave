@@ -11,13 +11,30 @@ import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.utils.OptionsBuilder;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * This unit test needs Couchbase cluster at local. You could easily set up one with docker image
+ * at https://hub.docker.com/_/couchbase. Once server is up,
+ *  create cluster named as "test"
+ *  create bucket named as "test"
+ *  create user/password which has all the roles to access bucket "test"
+ */
 public class CouchbaseClientFactoryTest {
+
+    @ClassRule
+    public static TestClusterChecker testClusterChecker = new TestClusterChecker(
+            "localhost",    // node
+            "test",         // cluster name
+            "user",         // bucket user name
+            "password",     // bucket password
+            "test"          // bucket name
+    );
 
     @Test
     public void createDestroy() throws Exception {
@@ -43,8 +60,8 @@ public class CouchbaseClientFactoryTest {
         Map<String, Object> clusterOptions = new OptionsBuilder()
                 .option("cluster", "test")
                 .option("nodes", "localhost")
-                .option("username", "testUser1")
-                .option("password", "testUser1")
+                .option("username", "user")
+                .option("password", "password")
                 .build();
 
         dcRegistry.initializeClient("CouchbaseCluster", clusterId, clusterOptions);
@@ -55,7 +72,7 @@ public class CouchbaseClientFactoryTest {
         // 4.initialize Bucket object  with specified id at client side
         Map<String, Object> bucketOptions = new OptionsBuilder()
                 .option("clusterId", clusterId)
-                .option("bucket", "testBucket1")
+                .option("bucket", "test")
                 .build();
 
         final String bucketId = "bucket456";
@@ -74,7 +91,11 @@ public class CouchbaseClientFactoryTest {
 
         // Load the Document and print it
         // Prints Content and Metadata of the stored Document
-        System.out.println(bucket.get("u:king_arthur"));
+        assertNotNull(bucket.get("u:king_arthur"));
+
+        assertNotNull(bucket.remove("u:king_arthur"));
+
+        assertNull(bucket.get("u:king_arthur"));
     }
 
 }
