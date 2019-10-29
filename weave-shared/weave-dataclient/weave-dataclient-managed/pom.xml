@@ -20,6 +20,7 @@
         <module>weave-dataclient-hdfs</module>
         <module>weave-dataclient-ceph</module>
         <module>weave-dataclient-knox</module>
+        <module>weave-dataclient-cassandra</module>
     </modules>
 
 </project>
