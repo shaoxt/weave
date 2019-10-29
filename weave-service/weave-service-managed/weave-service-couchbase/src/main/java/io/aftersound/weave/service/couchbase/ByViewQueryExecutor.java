@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 class ByViewQueryExecutor extends Executor {
 
     @Override
-    public Object execute(CouchbaseServiceExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
+    public Object execute(CouchbaseExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
 
         if (!validate(executionControl, context)) {
             return null;
@@ -49,7 +49,7 @@ class ByViewQueryExecutor extends Executor {
         return null;
     }
 
-    private boolean validate(CouchbaseServiceExecutionControl executionControl, ServiceContext context) {
+    private boolean validate(CouchbaseExecutionControl executionControl, ServiceContext context) {
         if (executionControl.getRepository().getViewQueryControl() == null) {
             context.getMessages().addMessage(Errors.VIEW_QUERY_CONTROL_MISSING);
             return false;

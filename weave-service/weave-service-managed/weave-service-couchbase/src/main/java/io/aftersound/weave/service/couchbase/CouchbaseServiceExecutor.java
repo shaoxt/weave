@@ -9,9 +9,16 @@ import io.aftersound.weave.service.request.ParamValueHolders;
 import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.resources.ResourceInitializer;
 
+/**
+ * A {@link ServiceExecutor} which reads data from target Couchbase cluster
+ * specified in {@link CouchbaseExecutionControl}, by
+ *  1.get by key
+ *  2.query by view query
+ *  3.query by N1QL query
+ */
 public class CouchbaseServiceExecutor extends ServiceExecutor {
 
-    public static final NamedType<ExecutionControl> COMPANION_CONTROL_TYPE = CouchbaseServiceExecutionControl.TYPE;
+    public static final NamedType<ExecutionControl> COMPANION_CONTROL_TYPE = CouchbaseExecutionControl.TYPE;
     public static final ResourceInitializer RESOURCE_INITIALIZER = new ResourceInitializerImpl();
 
     public CouchbaseServiceExecutor(ManagedResources managedResources) {
@@ -30,7 +37,7 @@ public class CouchbaseServiceExecutor extends ServiceExecutor {
             return null;
         }
 
-        CouchbaseServiceExecutionControl executionControl = serviceMetadata.getExecutionControl();
+        CouchbaseExecutionControl executionControl = serviceMetadata.getExecutionControl();
 
         Executor executor;
         if (executionControl.getByKey() != null) {
@@ -47,12 +54,12 @@ public class CouchbaseServiceExecutor extends ServiceExecutor {
     }
 
     private boolean validate(ServiceMetadata serviceMetadata, ServiceContext context) {
-        if (!(serviceMetadata.getExecutionControl() instanceof CouchbaseServiceExecutionControl)) {
+        if (!(serviceMetadata.getExecutionControl() instanceof CouchbaseExecutionControl)) {
             context.getMessages().addMessage(Errors.EXECUTION_CONTROL_UNEXPECTED);
             return false;
         }
 
-        CouchbaseServiceExecutionControl executionControl = serviceMetadata.getExecutionControl();
+        CouchbaseExecutionControl executionControl = serviceMetadata.getExecutionControl();
         if (executionControl.getRepository() == null) {
             context.getMessages().addMessage(Errors.REPOSITORY_MISSING);
             return false;

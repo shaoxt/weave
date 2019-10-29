@@ -20,7 +20,7 @@ abstract class Executor {
         return (E)this;
     }
 
-    public abstract Object execute(CouchbaseServiceExecutionControl executionControl, ParamValueHolders request, ServiceContext context);
+    public abstract Object execute(CouchbaseExecutionControl executionControl, ParamValueHolders request, ServiceContext context);
 
     protected static String render(String template, ParamValueHolders paramValueHolders) {
         Map<String, Object> variables = new LinkedHashMap<>();

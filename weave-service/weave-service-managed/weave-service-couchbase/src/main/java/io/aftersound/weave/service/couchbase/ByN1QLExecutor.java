@@ -13,7 +13,7 @@ import io.aftersound.weave.service.request.ParamValueHolders;
 class ByN1QLExecutor extends Executor {
 
     @Override
-    public Object execute(CouchbaseServiceExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
+    public Object execute(CouchbaseExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
         ByN1QL byN1QL = executionControl.getByN1QL();
 
         String query = render(byN1QL.getTemplate(), request);

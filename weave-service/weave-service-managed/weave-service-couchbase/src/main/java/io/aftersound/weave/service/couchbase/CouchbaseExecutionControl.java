@@ -4,11 +4,11 @@ import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.couchbase.Repository;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 
-public class CouchbaseServiceExecutionControl implements ExecutionControl {
+public class CouchbaseExecutionControl implements ExecutionControl {
 
     public static final NamedType<ExecutionControl> TYPE = NamedType.of(
             "Couchbase",
-            CouchbaseServiceExecutionControl.class
+            CouchbaseExecutionControl.class
     );
 
     @Override

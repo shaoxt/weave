@@ -1,35 +1,39 @@
 package io.aftersound.weave.service.couchbase;
 
-import io.aftersound.weave.data.DataFormat;
+import java.util.Map;
 
+/**
+ * ByKey supports
+ *  1.
+ */
 public class ByKey {
 
-    private String template;
-    private DataFormat dataFormat;
-    private String dataType;
+    private String keyTemplate;
+    private String schemaSelector;
 
-    public String getTemplate() {
-        return template;
+    private Map<String, DataSchema> schemas;
+
+    public String getKeyTemplate() {
+        return keyTemplate;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setKeyTemplate(String keyTemplate) {
+        this.keyTemplate = keyTemplate;
     }
 
-    public DataFormat getDataFormat() {
-        return dataFormat;
+    public String getSchemaSelector() {
+        return schemaSelector;
     }
 
-    public void setDataFormat(DataFormat dataFormat) {
-        this.dataFormat = dataFormat;
+    public void setSchemaSelector(String schemaSelector) {
+        this.schemaSelector = schemaSelector;
     }
 
-    public String getDataType() {
-        return dataType;
+    public Map<String, DataSchema> getSchemas() {
+        return schemas;
     }
 
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
+    public void setSchemas(Map<String, DataSchema> schemas) {
+        this.schemas = schemas;
     }
-
 }
