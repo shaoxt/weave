@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class DemoServiceExecutor extends ServiceExecutor {
 
-    public static final NamedType<ExecutionControl> COMPANION_CONTROL_TYPE = DemoServiceExecutionControl.TYPE;
+    public static final NamedType<ExecutionControl> COMPANION_CONTROL_TYPE = DemoExecutionControl.TYPE;
 
     public DemoServiceExecutor(ManagedResources managedResources) {
         super(managedResources);
