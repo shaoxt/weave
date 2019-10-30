@@ -1,0 +1,7 @@
+{
+  "category": "data-format",
+  "baseType": "io.aftersound.weave.data.DataFormat",
+  "types": [
+    "io.aftersound.weave.data.JsonDataFormat"
+  ]
+}
