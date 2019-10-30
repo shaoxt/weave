@@ -6,6 +6,7 @@ import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
+import io.aftersound.weave.dataclient.Signature;
 
 import java.util.Map;
 
@@ -30,11 +31,8 @@ public class CouchbaseClusterFactory extends DataClientFactory<Cluster> {
     @Override
     protected Cluster createDataClient(Map<String, Object> options) {
         Settings settings = Settings.from(options);
-        Cluster cluster = dataClientRegistry.getClient(CBSignature.of(options));
-        if (cluster == null) {
-            cluster = CouchbaseCluster.create(settings.getNodes());
-            cluster.authenticate(settings.getUsername(), settings.getPassword());
-        }
+        Cluster cluster = CouchbaseCluster.create(settings.getNodes());
+        cluster.authenticate(settings.getUsername(), settings.getPassword());
         return cluster;
     }
 
