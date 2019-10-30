@@ -10,7 +10,8 @@ public class ResourceInitializerImpl implements ResourceInitializer {
     @Override
     public ResourceType<?>[] getDependingResourceTypes() {
         return new ResourceType[] {
-                Constants.DATA_CLIENT_REGISTRY_RESOURCE_TYPE
+                ResourceTypes.DATA_CLIENT_REGISTRY,
+                ResourceTypes.DATA_FORMAT_FACTORY
         };
     }
 

@@ -4,7 +4,7 @@ import io.aftersound.weave.service.message.MessageData;
 
 import static io.aftersound.weave.service.message.MessageData.serviceError;
 
-class Errors {
+class Messages {
 
     public static final MessageData EXECUTION_CONTROL_UNEXPECTED = serviceError(1001, "ServiceMetadata.executionControl is either missing or unexpected");
     public static final MessageData EXECUTION_CONTROL_MALFORMED = serviceError(1002, "ServiceMetadata.executionControl is malformed");
@@ -17,4 +17,5 @@ class Errors {
     public static final MessageData VIEW_QUERY_NOT_RESOLVABLE = serviceError(1023, "ServiceMetadata.executionControl.byViewQuery.template cannot be resolved as ViewQuery");
 
     public static final MessageData MALFORMED_BY_N1QL = serviceError(1031, "ServiceMetadata.executionControl.byN1QL is malformed");
+    public static final MessageData GET_AND_DESERIALIZE_EXCEPTION_OCCURRED = serviceError(1032, "Exception occurred when attempting to get and deserialize data");
 }

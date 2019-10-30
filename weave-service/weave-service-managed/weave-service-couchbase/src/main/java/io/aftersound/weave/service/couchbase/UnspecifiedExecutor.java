@@ -7,7 +7,7 @@ class UnspecifiedExecutor extends Executor {
 
     @Override
     public Object execute(CouchbaseExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
-        context.getMessages().addMessage(Errors.EXECUTION_CONTROL_MALFORMED);
+        context.getMessages().addMessage(Messages.EXECUTION_CONTROL_MALFORMED);
         return null;
     }
 

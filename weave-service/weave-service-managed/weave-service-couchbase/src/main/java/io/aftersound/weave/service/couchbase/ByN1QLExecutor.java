@@ -25,7 +25,7 @@ class ByN1QLExecutor extends Executor {
 
         Repository repository = executionControl.getRepository();
 
-        DataClientRegistry dcr = managedResources.getResource(Constants.DATA_CLIENT_REGISTRY_RESOURCE_TYPE);
+        DataClientRegistry dcr = managedResources.getResource(ResourceTypes.DATA_CLIENT_REGISTRY);
         Bucket bucket = dcr.getClient(repository.getId());
         N1qlQueryResult result = bucket.query(n1qlQuery);
         for (N1qlQueryRow row : result) {

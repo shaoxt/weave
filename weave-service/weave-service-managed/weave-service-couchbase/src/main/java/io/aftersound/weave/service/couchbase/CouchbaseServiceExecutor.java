@@ -55,13 +55,13 @@ public class CouchbaseServiceExecutor extends ServiceExecutor {
 
     private boolean validate(ServiceMetadata serviceMetadata, ServiceContext context) {
         if (!(serviceMetadata.getExecutionControl() instanceof CouchbaseExecutionControl)) {
-            context.getMessages().addMessage(Errors.EXECUTION_CONTROL_UNEXPECTED);
+            context.getMessages().addMessage(Messages.EXECUTION_CONTROL_UNEXPECTED);
             return false;
         }
 
         CouchbaseExecutionControl executionControl = serviceMetadata.getExecutionControl();
         if (executionControl.getRepository() == null) {
-            context.getMessages().addMessage(Errors.REPOSITORY_MISSING);
+            context.getMessages().addMessage(Messages.REPOSITORY_MISSING);
             return false;
         }
 

@@ -3,26 +3,18 @@ package io.aftersound.weave.service.couchbase;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.BinaryDocument;
 import com.couchbase.client.java.document.JsonDocument;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import io.aftersound.weave.couchbase.GetControl;
 import io.aftersound.weave.couchbase.Repository;
 import io.aftersound.weave.data.DataFormat;
+import io.aftersound.weave.data.DataFormatRegistry;
+import io.aftersound.weave.data.Deserializer;
 import io.aftersound.weave.dataclient.DataClientRegistry;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.request.ParamValueHolders;
 
 import java.util.concurrent.TimeUnit;
 
 class ByKeyExecutor extends Executor {
-
-    private static final ObjectMapper JSON_MAPPER = ObjectMapperBuilder.forJson().build();
-    private static final ObjectMapper SMILE_MAPPER = new ObjectMapper(new SmileFactory())
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @Override
     public Object execute(CouchbaseExecutionControl executionControl, ParamValueHolders request, ServiceContext context) {
@@ -35,53 +27,67 @@ class ByKeyExecutor extends Executor {
         Repository repository = executionControl.getRepository();
         GetControl getControl = repository.getGetControl();
 
-        DataClientRegistry dcr = managedResources.getResource(Constants.DATA_CLIENT_REGISTRY_RESOURCE_TYPE);
+        DataClientRegistry dcr = managedResources.getResource(ResourceTypes.DATA_CLIENT_REGISTRY);
         Bucket bucket = dcr.getClient(repository.getId());
 
-        // TODO: creating weave-schema-core
-        // TODO: how to handle raw type
+        DataFormatRegistry dataFormatRegistry = managedResources.getResource(ResourceTypes.DATA_FORMAT_FACTORY);
 
-        if (DataFormat.JSON == dataSchema.getFormat()) {
-            JsonDocument jsonDoc;
-            if (getControl == null) {
-                jsonDoc = bucket.get(key);
+        DataFormat dataFormat = dataFormatRegistry.getDataFormat(dataSchema.getFormat());
+        Class<?> type = getType(dataSchema.getSchema());
+        Deserializer deserializer = dataFormat.deserializer();
+
+        // TODO: how about simple/native types?
+        try {
+            if ("JSON".equals(dataSchema.getFormat())) {
+                return getAndDeserializeJsonDoc(bucket, key, getControl, deserializer, type);
             } else {
-                jsonDoc = bucket.get(key, getControl.getTimeout(), TimeUnit.MILLISECONDS);
+                return getAndDeserializeBinaryDoc(bucket, key, getControl, deserializer, type);
             }
+        } catch (Exception e) {
+            context.getMessages().addMessage(Messages.GET_AND_DESERIALIZE_EXCEPTION_OCCURRED);
+            return null;
+        }
+    }
 
-            try {
-                Class<?> type = Class.forName(dataSchema.getSchema());
-                return JSON_MAPPER.readValue(jsonDoc.content().toString(), type);
-            } catch (Exception e) {
-                // TODO
-                //context.getMessages().addMessage();
-                return null;
-            }
+    private Class<?> getType(String type) {
+        try {
+            return Class.forName(type);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    private Object getAndDeserializeJsonDoc(
+            Bucket bucket,
+            String key,
+            GetControl getControl,
+            Deserializer deserializer,
+            Class<?> targetType) throws Exception {
+        JsonDocument jsonDoc;
+        if (getControl == null) {
+            jsonDoc = bucket.get(key);
+        } else {
+            jsonDoc = bucket.get(key, getControl.getTimeout(), TimeUnit.MILLISECONDS);
         }
 
-        if (DataFormat.Smile == dataSchema.getFormat()) {
-            BinaryDocument binaryDoc;
+        return deserializer.fromString(jsonDoc.content().toString(), targetType);
+    }
 
-            BinaryDocument proto = BinaryDocument.create(key);
-            if (getControl == null) {
-                binaryDoc = bucket.get(proto);
-            } else {
-                binaryDoc = bucket.get(proto, getControl.getTimeout(), TimeUnit.MILLISECONDS);
-            }
-
-            try {
-                Class<?> type = Class.forName(dataSchema.getSchema());
-                return SMILE_MAPPER.readValue(binaryDoc.content().array(), type);
-            } catch (Exception e) {
-                // TODO
-                //context.getMessages().addMessage();
-                return null;
-            }
+    private Object getAndDeserializeBinaryDoc(
+            Bucket bucket,
+            String key,
+            GetControl getControl,
+            Deserializer deserializer,
+            Class<?> targetType) throws Exception {
+        BinaryDocument binaryDoc;
+        BinaryDocument proto = BinaryDocument.create(key);
+        if (getControl == null) {
+            binaryDoc = bucket.get(proto);
+        } else {
+            binaryDoc = bucket.get(proto, getControl.getTimeout(), TimeUnit.MILLISECONDS);
         }
 
-        // TODO:
-        // context.getMessages().addMessage(error);
-        return null;
+        return deserializer.fromBytes(binaryDoc.content().array(), targetType);
     }
 
 }

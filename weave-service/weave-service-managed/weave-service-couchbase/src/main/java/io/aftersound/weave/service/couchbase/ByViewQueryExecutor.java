@@ -27,7 +27,7 @@ class ByViewQueryExecutor extends Executor {
         try {
             viewQuery = createViewQuery(byViewQuery.getTemplate(), request);
         } catch (Exception e) {
-            context.getMessages().addMessage(Errors.VIEW_QUERY_NOT_RESOLVABLE);
+            context.getMessages().addMessage(Messages.VIEW_QUERY_NOT_RESOLVABLE);
             // TODO: logging
             return null;
         }
@@ -35,7 +35,7 @@ class ByViewQueryExecutor extends Executor {
         Repository repository = executionControl.getRepository();
         ViewQueryControl vqc = repository.getViewQueryControl();
 
-        Bucket bucket = managedResources.getResource(Constants.DATA_CLIENT_REGISTRY_RESOURCE_TYPE).getClient(repository.getId());
+        Bucket bucket = managedResources.getResource(ResourceTypes.DATA_CLIENT_REGISTRY).getClient(repository.getId());
 
         ViewResult viewResult = bucket.query(viewQuery, vqc.getTimeout(), TimeUnit.MILLISECONDS);
         for (ViewRow row : viewResult) {
@@ -51,12 +51,12 @@ class ByViewQueryExecutor extends Executor {
 
     private boolean validate(CouchbaseExecutionControl executionControl, ServiceContext context) {
         if (executionControl.getRepository().getViewQueryControl() == null) {
-            context.getMessages().addMessage(Errors.VIEW_QUERY_CONTROL_MISSING);
+            context.getMessages().addMessage(Messages.VIEW_QUERY_CONTROL_MISSING);
             return false;
         }
 
         if (executionControl.getByViewQuery().getTemplate() == null) {
-            context.getMessages().addMessage(Errors.VIEW_QUERY_TEMPLATE_MISSING);
+            context.getMessages().addMessage(Messages.VIEW_QUERY_TEMPLATE_MISSING);
             return false;
         }
 

@@ -1,16 +1,14 @@
 package io.aftersound.weave.service.couchbase;
 
-import io.aftersound.weave.data.DataFormat;
-
 public class DataSchema {
-    private DataFormat format;
+    private String format;
     private String schema;
 
-    public DataFormat getFormat() {
+    public String getFormat() {
         return format;
     }
 
-    public void setFormat(DataFormat format) {
+    public void setFormat(String format) {
         this.format = format;
     }
 
