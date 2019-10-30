@@ -61,19 +61,15 @@ public class ResourcesInitializerImpl implements ResourceInitializer {
                         LibraryRegistry.class
                 ),
                 new ResourceType(
+                        "service-schema",
+                        LibraryRegistry.class
+                ),
+                new ResourceType(
                         "batch-library",
                         LibraryRegistry.class
                 ),
                 new ResourceType(
                         "batch-extension",
-                        LibraryRegistry.class
-                ),
-                new ResourceType(
-                        "stream-library",
-                        LibraryRegistry.class
-                ),
-                new ResourceType(
-                        "stream-extension",
                         LibraryRegistry.class
                 )
         };
@@ -101,6 +97,11 @@ public class ResourcesInitializerImpl implements ResourceInitializer {
             );
 
             managedResources.setResource(
+                    "service-schema",
+                    createAndInitExtensionLibraryRegistry("${WEAVE_HOME}/service/schema")
+            );
+
+            managedResources.setResource(
                     "batch-library",
                     createAndInitExtensionLibraryRegistry("${WEAVE_HOME}/batch/library")
             );
@@ -108,16 +109,6 @@ public class ResourcesInitializerImpl implements ResourceInitializer {
             managedResources.setResource(
                     "batch-extension",
                     createAndInitExtensionLibraryRegistry("${WEAVE_HOME}/batch/extension")
-            );
-
-            managedResources.setResource(
-                    "stream-library",
-                    createAndInitExtensionLibraryRegistry("${WEAVE_HOME}/stream/library")
-            );
-
-            managedResources.setResource(
-                    "stream-extension",
-                    createAndInitExtensionLibraryRegistry("${WEAVE_HOME}/stream/extension")
             );
 
             initalized = true;
